@@ -1,20 +1,21 @@
-import { validate } from "class-validator";
+import { ValidationError } from '@nestjs/common';
+import { validate } from 'class-validator';
 
 export abstract class CommandBase {
-    private _errors: any[] = [];
+   private _errors: ValidationError[] = [];
 
-    get errors(): any[] {
-        return this._errors;
-    }
+   get errors(): any[] {
+      return this._errors;
+   }
 
-    get hasErrors(): boolean {
-        return this._errors.length > 0;
-    }
+   get hasErrors(): boolean {
+      return this._errors.length > 0;
+   }
 
-    abstract isValid(): Promise<boolean>;
+   abstract isValid(): Promise<boolean>;
 
-    protected async validateThis(): Promise<boolean> {
-        this._errors = await validate(this);
-        return !this.hasErrors;
-    }
+   protected async validateThis(): Promise<boolean> {
+      this._errors = await validate(this);
+      return !this.hasErrors;
+   }
 }

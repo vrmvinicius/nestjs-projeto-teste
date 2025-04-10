@@ -1,48 +1,40 @@
-import { Cliente } from "@/cliente/entities/cliente.entity";
-import { EntityManager } from "@mikro-orm/core";
-import { Logger } from "@nestjs/common";
-import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
-import { Result } from "src/common/results/result";
-import { ObterClienteCommand } from "./obter-cliente.command";
-import { ObterClienteResponse } from "./obter-cliente.response";
+import { Cliente } from '@/cliente/entities/cliente.entity';
+import { EntityManager } from '@mikro-orm/core';
+import { Logger } from '@nestjs/common';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { Result } from 'src/common/results/result';
+import { ObterClienteCommand } from './obter-cliente.command';
+import { ObterClienteResponse } from './obter-cliente.response';
 
 @QueryHandler(ObterClienteCommand)
-export class ObterClienteHandler implements
-    IQueryHandler<ObterClienteCommand, Result<ObterClienteResponse>> {
+export class ObterClienteHandler implements IQueryHandler<ObterClienteCommand, Result<ObterClienteResponse>> {
+   constructor(private readonly em: EntityManager) {}
 
-    constructor(
-        private readonly em: EntityManager
-    ) { }
+   private readonly logger = new Logger(ObterClienteHandler.name);
 
-    private readonly logger = new Logger(ObterClienteHandler.name);
+   async execute(query: ObterClienteCommand): Promise<Result<ObterClienteResponse>> {
+      if (!(await query.isValid())) {
+         return Result.fail(query.errors);
+      }
 
-    async execute(query: ObterClienteCommand): Promise<Result<ObterClienteResponse>> {
+      const cliente = await this.em.findOne(Cliente, {
+         Id: query.id,
+         Ativo: true,
+      });
 
-        if (!await query.isValid()) {
-            return Result.fail(query.errors);
-        }
+      if (!cliente) {
+         return Result.notFound(`Cliente de ID ${query.id} não encontrado ou inativo.`);
+      }
 
-        const cliente = await this.em.findOne(
-            Cliente,
-            {
-                Id: query.id,
-                Ativo: true
-            }
-        );
+      const response = new ObterClienteResponse({
+         id: cliente.Id,
+         nome: cliente.Nome,
+         email: cliente.Email.toString(),
+         telefone: cliente.Telefone.toString(),
+         ativo: true,
+         dataCadastro: cliente.DataCadastro,
+      });
 
-        if (!cliente) {
-            return Result.notFound(`Cliente de ID ${query.id} não encontrado ou inativo.`);
-        }
-
-        const response = new ObterClienteResponse({
-            id: cliente.Id,
-            nome: cliente.Nome,
-            email: cliente.Email.toString(),
-            telefone: cliente.Telefone.toString(),
-            ativo: true,
-            dataCadastro: cliente.DataCadastro
-        });
-
-        return Result.ok(response);
-    }
+      return Result.ok(response);
+   }
 }

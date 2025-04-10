@@ -6,13 +6,8 @@ import { ObterClienteTodosHandler } from './queries/obter-cliente-todos/obter-cl
 import { ObterClienteHandler } from './queries/obter-cliente/obter-cliente.handler';
 
 @Module({
-    imports: [CqrsModule],
-    controllers: [ClientesController],
-    providers: [
-        ObterClienteHandler,
-        ObterClienteTodosHandler,
-        CriarClienteHandler,
-        Logger
-    ],
+   imports: [CqrsModule],
+   controllers: [ClientesController],
+   providers: [ObterClienteHandler, ObterClienteTodosHandler, CriarClienteHandler, Logger],
 })
-export class ClienteModule { }
+export class ClienteModule {}

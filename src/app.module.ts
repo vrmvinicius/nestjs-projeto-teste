@@ -6,11 +6,8 @@ import { ClienteModule } from './cliente/cliente.module';
 import config from './mikro-orm.config';
 
 @Module({
-  imports: [
-    MikroOrmModule.forRoot(config),
-    ClienteModule
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+   imports: [MikroOrmModule.forRoot(config), ClienteModule],
+   controllers: [AppController],
+   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

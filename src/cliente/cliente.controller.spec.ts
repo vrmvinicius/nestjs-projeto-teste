@@ -9,103 +9,95 @@ import { ObterClienteCommand } from './queries/obter-cliente/obter-cliente.comma
 import { ObterClienteResponse } from './queries/obter-cliente/obter-cliente.response';
 
 describe('ClienteController', () => {
-  let controller: ClientesController;
-  let commandBus: CommandBus;
-  let queryBus: QueryBus;
+   let controller: ClientesController;
+   let commandBus: CommandBus;
+   let queryBus: QueryBus;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [ClientesController],
-      providers: [
-        {
-          provide: CommandBus,
-          useValue: {
-            execute: jest.fn()
-          }
-        },
-        {
-          provide: QueryBus,
-          useValue: {
-            execute: jest.fn()
-          }
-        }
-      ]
-    }).compile();
+   beforeEach(async () => {
+      const module: TestingModule = await Test.createTestingModule({
+         controllers: [ClientesController],
+         providers: [
+            {
+               provide: CommandBus,
+               useValue: {
+                  execute: jest.fn(),
+               },
+            },
+            {
+               provide: QueryBus,
+               useValue: {
+                  execute: jest.fn(),
+               },
+            },
+         ],
+      }).compile();
 
-    controller = module.get<ClientesController>(ClientesController);
-    commandBus = module.get<CommandBus>(CommandBus);
-    queryBus = module.get<QueryBus>(QueryBus);
-  });
+      controller = module.get<ClientesController>(ClientesController);
+      commandBus = module.get<CommandBus>(CommandBus);
+      queryBus = module.get<QueryBus>(QueryBus);
+   });
 
-  describe('criar', () => {
-    it('deve criar um cliente com sucesso', async () => {
-      const dto = {
-        nome: 'Test User',
-        email: 'test@test.com',
-        telefone: '11999999999',
-        dataCadastro: new Date()
-      };
+   describe('criar', () => {
+      it('deve criar um cliente com sucesso', async () => {
+         const dto = {
+            nome: 'Test User',
+            email: 'test@test.com',
+            telefone: '11999999999',
+            dataCadastro: new Date(),
+         };
 
-      const expectedResponse = new CriarClienteResponse({
-        id: 1,
-        nome: dto.nome,
-        email: dto.email,
-        telefone: dto.telefone,
-        dataCadastro: dto.dataCadastro
+         const expectedResponse = new CriarClienteResponse({
+            id: 1,
+            nome: dto.nome,
+            email: dto.email,
+            telefone: dto.telefone,
+            dataCadastro: dto.dataCadastro,
+         });
+
+         jest.spyOn(commandBus, 'execute').mockResolvedValue(Result.ok(expectedResponse));
+
+         const result = await controller.criar(dto);
+
+         expect(result).toEqual(expectedResponse);
+         expect(commandBus.execute).toHaveBeenCalledWith(expect.any(CriarClienteCommand));
       });
 
-      jest.spyOn(commandBus, 'execute').mockResolvedValue(Result.ok(expectedResponse));
+      it('deve lançar exceção quando falhar a criação', async () => {
+         const dto = {
+            nome: 'Test User',
+            email: 'invalid-email',
+            telefone: '123',
+         };
 
-      const result = await controller.criar(dto);
+         jest.spyOn(commandBus, 'execute').mockResolvedValue(Result.fail('Email inválido'));
 
-      expect(result).toEqual(expectedResponse);
-      expect(commandBus.execute).toHaveBeenCalledWith(
-        expect.any(CriarClienteCommand)
-      );
-    });
+         await expect(controller.criar(dto)).rejects.toThrow(UnprocessableEntityException);
+      });
+   });
 
-    it('deve lançar exceção quando falhar a criação', async () => {
-      const dto = {
-        nome: 'Test User',
-        email: 'invalid-email',
-        telefone: '123'
-      };
+   describe('obter', () => {
+      it('deve obter um cliente com sucesso', async () => {
+         const expectedResponse = new ObterClienteResponse({
+            id: 1,
+            nome: 'Test User',
+            email: 'test@test.com',
+            telefone: '11999999999',
+            ativo: true,
+            dataCadastro: new Date(),
+         });
 
-      jest.spyOn(commandBus, 'execute').mockResolvedValue(
-        Result.fail('Email inválido')
-      );
+         jest.spyOn(queryBus, 'execute').mockResolvedValue(Result.ok(expectedResponse));
 
-      await expect(controller.criar(dto)).rejects.toThrow(UnprocessableEntityException);
-    });
-  });
+         const result = await controller.obter(1);
 
-  describe('obter', () => {
-    it('deve obter um cliente com sucesso', async () => {
-      const expectedResponse = new ObterClienteResponse({
-        id: 1,
-        nome: 'Test User',
-        email: 'test@test.com',
-        telefone: '11999999999',
-        ativo: true,
-        dataCadastro: new Date()
+         expect(result).toEqual(expectedResponse);
+         expect(queryBus.execute).toHaveBeenCalledWith(expect.any(ObterClienteCommand));
       });
 
-      jest.spyOn(queryBus, 'execute').mockResolvedValue(Result.ok(expectedResponse));
+      it('deve lançar exceção quando cliente não for encontrado', async () => {
+         jest.spyOn(queryBus, 'execute').mockResolvedValue(Result.fail('Cliente não encontrado'));
 
-      const result = await controller.obter(1);
-
-      expect(result).toEqual(expectedResponse);
-      expect(queryBus.execute).toHaveBeenCalledWith(
-        expect.any(ObterClienteCommand)
-      );
-    });
-
-    it('deve lançar exceção quando cliente não for encontrado', async () => {
-      jest.spyOn(queryBus, 'execute').mockResolvedValue(
-        Result.fail('Cliente não encontrado')
-      );
-
-      await expect(controller.obter(1)).rejects.toThrow(UnprocessableEntityException);
-    });
-  });
+         await expect(controller.obter(1)).rejects.toThrow(UnprocessableEntityException);
+      });
+   });
 });

@@ -1,5 +1,5 @@
 export interface CriarClienteDto {
-    nome: string;
-    email: string;
-    telefone: string;
+   nome: string;
+   email: string;
+   telefone: string;
 }
