@@ -1,7 +1,7 @@
-import { IsString, IsNotEmpty, Length, IsEmail, Matches, ValidationArguments } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, Length, Matches, ValidationArguments } from "class-validator";
 import { CommandBase } from "src/common/domain/commands/command.base";
 
-export class CriarClienteCommand extends CommandBase {    
+export class CriarClienteCommand extends CommandBase {
     @IsString({ message: 'Nome deve ser um texto' })
     @IsNotEmpty({ message: 'Nome não pode estar vazio' })
     @Length(3, 100, {
@@ -28,7 +28,7 @@ export class CriarClienteCommand extends CommandBase {
         super();
         this.nome = params.nome;
         this.email = params.email;
-        this.telefone = params.telefone;        
+        this.telefone = params.telefone;
     }
 
     async isValid(): Promise<boolean> {

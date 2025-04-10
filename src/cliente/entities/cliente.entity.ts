@@ -16,17 +16,20 @@ export class Cliente {
     get Ativo(): boolean { return this.ativo; }
     get DataCadastro(): Date { return this.dataCadastro; }
 
+    // Este setter é necessário para que o ORM possa atualizar o ID após a inserção no banco de dados.
+    private set Id(value: number) { this.id = value; }
+
     private constructor() { }
 
-    public static criar(        
+    public static criar(params: {
         nome: string,
         email: string,
         telefone: string
-    ): Cliente {
-        const cliente = new Cliente();        
-        cliente.nome = nome;
-        cliente.email = new Email(email);
-        cliente.telefone = new Telefone(telefone);
+    }): Cliente {
+        const cliente = new Cliente();
+        cliente.nome = params.nome;
+        cliente.email = new Email(params.email);
+        cliente.telefone = new Telefone(params.telefone);
         cliente.ativo = true;
         cliente.dataCadastro = new Date();
         return cliente;

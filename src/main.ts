@@ -1,6 +1,7 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { NotFoundFilter } from './common/filters/not-found.filter'; // Importa o novo filtro
 import { ValidationFilter } from './common/filters/validation.filter';
 
 async function bootstrap() {
@@ -13,7 +14,10 @@ async function bootstrap() {
     errorHttpStatusCode: 422
   }));
 
-  app.useGlobalFilters(new ValidationFilter());
+  app.useGlobalFilters(
+    new ValidationFilter(), 
+    new NotFoundFilter()
+  ); // Registra o novo filtro
 
   await app.listen(process.env.PORT ?? 3000);
 }

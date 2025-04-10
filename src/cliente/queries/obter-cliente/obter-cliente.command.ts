@@ -8,7 +8,7 @@ export class ObterClienteCommand extends CommandBase {
 
     constructor(params: {
         id: number
-    }) {        
+    }) {
         super();
         this.id = params.id;
     }
