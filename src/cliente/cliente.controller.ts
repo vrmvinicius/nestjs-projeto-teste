@@ -18,7 +18,7 @@ export class ClienteController {
     async obter(@Param('id') id: number): Promise<ObterClienteResponse> {
         const command = new ObterClienteCommand({id: id});
         const response = await this.queryBus.execute(command) as Result<ObterClienteResponse>;
-        return response.valueOrthrowIfFailure();
+        return response.valueOrThrowIfFailure();
     }
 
     @Post('api/v1/cliente')
@@ -30,6 +30,6 @@ export class ClienteController {
         });
 
         const response = await this.commandBus.execute(command) as Result<CriarClienteResponse>;
-        return response.valueOrthrowIfFailure();
+        return response.valueOrThrowIfFailure();
     }
 }

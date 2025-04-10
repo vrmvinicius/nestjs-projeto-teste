@@ -37,7 +37,7 @@ export class Result<T> {
         return new Result<U>(false, undefined as U, errorOrValidationErrors, validationErrors);
     }
 
-    public valueOrthrowIfFailure(): T {
+    public valueOrThrowIfFailure(): T {
         if (this.isFailure) {
             throw new UnprocessableEntityException({
                 message: this.error,
