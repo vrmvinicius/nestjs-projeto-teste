@@ -11,34 +11,34 @@ import { ObterClienteResponse } from './queries/obter-cliente/obter-cliente.resp
 
 @Controller()
 export class ClientesController {
-    constructor(
-        private readonly queryBus: QueryBus,
-        private readonly commandBus: CommandBus
-    ) { }
+   constructor(
+      private readonly queryBus: QueryBus,
+      private readonly commandBus: CommandBus,
+   ) {}
 
-    @Get('api/v1/clientes')
-    async obterTodos(): Promise<ObterClienteTodosResponse[]> {
-        const command = new ObterClienteTodosCommand({ativos: true});
-        const response = await this.queryBus.execute(command) as Result<ObterClienteTodosResponse[]>;
-        return response.valueOrThrowIfFailure();
-    }
+   @Get('api/v1/clientes')
+   async obterTodos(): Promise<ObterClienteTodosResponse[]> {
+      const command = new ObterClienteTodosCommand({ ativos: true });
+      const response = (await this.queryBus.execute(command)) as Result<ObterClienteTodosResponse[]>;
+      return response.valueOrThrowIfFailure();
+   }
 
-    @Get('api/v1/clientes/:id')
-    async obter(@Param('id') id: number): Promise<ObterClienteResponse> {
-        const command = new ObterClienteCommand({id: id});
-        const response = await this.queryBus.execute(command) as Result<ObterClienteResponse>;
-        return response.valueOrThrowIfFailure();
-    }
+   @Get('api/v1/clientes/:id')
+   async obter(@Param('id') id: number): Promise<ObterClienteResponse> {
+      const command = new ObterClienteCommand({ id: id });
+      const response = (await this.queryBus.execute(command)) as Result<ObterClienteResponse>;
+      return response.valueOrThrowIfFailure();
+   }
 
-    @Post('api/v1/clientes')
-    async criar(@Body() criarClienteDto: CriarClienteDto): Promise<CriarClienteResponse> {
-        const command = new CriarClienteCommand({
-            nome: criarClienteDto.nome,
-            email: criarClienteDto.email,
-            telefone: criarClienteDto.telefone
-        });
+   @Post('api/v1/clientes')
+   async criar(@Body() criarClienteDto: CriarClienteDto): Promise<CriarClienteResponse> {
+      const command = new CriarClienteCommand({
+         nome: criarClienteDto.nome,
+         email: criarClienteDto.email,
+         telefone: criarClienteDto.telefone,
+      });
 
-        const response = await this.commandBus.execute(command) as Result<CriarClienteResponse>;
-        return response.valueOrThrowIfFailure();
-    }
+      const response = (await this.commandBus.execute(command)) as Result<CriarClienteResponse>;
+      return response.valueOrThrowIfFailure();
+   }
 }
