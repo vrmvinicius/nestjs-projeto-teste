@@ -21,15 +21,15 @@ export class CriarClienteHandler implements ICommandHandler<CriarClienteCommand,
       });
 
       await this.em.transactional(async (em) => {
-         await em.persistAndFlush(cliente);
+         await em.saveInsert(cliente);
       });
 
       const response = new CriarClienteResponse({
-         id: cliente.Id,
-         nome: cliente.Nome,
-         email: cliente.Email.toString(),
-         telefone: cliente.Telefone.toString(),
-         dataCadastro: cliente.DataCadastro,
+         id: cliente.id,
+         nome: cliente.nome,
+         email: cliente.email.toString(),
+         telefone: cliente.telefone.toString(),
+         dataCadastro: cliente.dataCadastro,
       });
 
       return Result.created(response);
