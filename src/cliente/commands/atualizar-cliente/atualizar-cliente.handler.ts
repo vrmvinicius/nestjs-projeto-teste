@@ -1,4 +1,6 @@
 import { Cliente } from '@/cliente/entities/cliente.entity';
+import { Pedido } from '@/cliente/entities/pedido.entity';
+import { propriedadesDe } from '@/infrastructure/helpers/orm.helpers';
 import { EntityManager } from '@mikro-orm/core';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Result } from 'src/common/results/result';
@@ -16,7 +18,11 @@ export class AtualizarClienteHandler
          return Result.fail(command.errors);
       }
 
-      const cliente = await this.em.findOne(Cliente, { id: command.id, ativo: true });
+      const cliente = await this.em.findOne(
+         Cliente,
+         { id: command.id, ativo: true },
+         { populate: propriedadesDe<Cliente>('pedidos') },
+      );
 
       if (!cliente) {
          return Result.notFound(`Cliente de ID ${command.id} não encontrado ou inativo.`);
@@ -32,6 +38,11 @@ export class AtualizarClienteHandler
       cliente.atualizarEmail(command.email);
       cliente.atualizarTelefone(command.telefone);
 
+      cliente.pedidosArray()[0]?.atribuirNumero(111111);
+
+      const pedido = Pedido.criar({ numero: 1234567777 });
+      cliente.adicionarPedido(pedido);
+
       await this.em.transactional(async (em) => {
          await em.saveUpdate(cliente);
       });
@@ -41,6 +52,7 @@ export class AtualizarClienteHandler
          nome: cliente.nome,
          email: cliente.email.toString(),
          telefone: cliente.telefone.toString(),
+         pedidos: cliente.pedidosArray(),
       });
 
       return Result.created(response);
