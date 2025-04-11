@@ -20,7 +20,7 @@ export class ObterClienteTodosHandler
       }
 
       const clientes: Cliente[] = await this.em.find(Cliente, {
-         Ativo: query.ativos,
+         ativo: query.ativos,
       });
 
       if (clientes.length === 0) {
