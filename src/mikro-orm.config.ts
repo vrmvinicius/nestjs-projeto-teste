@@ -3,9 +3,10 @@ import { Migrator } from '@mikro-orm/migrations';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { SqliteDriver } from '@mikro-orm/sqlite';
 import { ClienteMapping } from './infrastructure/mappings/cliente.mapping';
+import { PedidoMapping } from './infrastructure/mappings/pedido.mapping';
 
 const config: Options = {
-   entities: [ClienteMapping],
+   entities: [ClienteMapping, PedidoMapping],
    entitiesTs: ['src/**/*.entity.ts'],
    driver: SqliteDriver, // Changed from 'type' to 'driver'
    dbName: 'database/projeto-teste.sqlite',
