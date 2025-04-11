@@ -6,32 +6,46 @@ import { TelefoneType } from '../types/telefone.type';
 
 export const ClienteMapping = new EntitySchema({
    class: Cliente,
+   tableName: 'clientes', // Define explicitamente o nome da tabela
    properties: {
       id: {
+         fieldName: 'id',
          type: 'number',
          primary: true,
          autoincrement: true,
-         fieldName: 'id', // Mapeia para a coluna "id"
       },
       nome: {
-         type: 'string',
          fieldName: 'nome',
+         type: 'string',
+         length: 100,
+         nullable: false,
       },
       email: {
-         type: EmailType, // Usa o custom type
          fieldName: 'email',
+         type: EmailType,
+         length: 150,
+         nullable: false,
+         unique: true,
+         index: true,
       },
       telefone: {
-         type: TelefoneType, // Usa o custom type
          fieldName: 'telefone',
+         type: TelefoneType,
+         length: 20,
+         nullable: false,
       },
       ativo: {
-         type: 'boolean',
          fieldName: 'ativo',
+         type: 'boolean',
+         nullable: false,
+         default: true,
+         index: true,
       },
       dataCadastro: {
-         type: 'Date',
          fieldName: 'data_cadastro',
+         type: 'Date',
+         nullable: false,
+         default: 'now()',
       },
    },
 });
