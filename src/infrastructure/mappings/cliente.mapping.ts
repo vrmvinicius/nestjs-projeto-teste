@@ -1,12 +1,13 @@
 // src/infrastructure/mikro-orm/mappings/cliente.mapping.ts
 import { Cliente } from '@/cliente/entities/cliente.entity';
+import { Pedido } from '@/cliente/entities/pedido.entity';
 import { EntitySchema } from '@mikro-orm/core';
 import { EmailType } from '../types/email.type';
 import { TelefoneType } from '../types/telefone.type';
 
 export const ClienteMapping = new EntitySchema({
    class: Cliente,
-   tableName: 'clientes', // Define explicitamente o nome da tabela
+   tableName: 'cliente', // Define explicitamente o nome da tabela
    properties: {
       id: {
          fieldName: 'id',
@@ -46,6 +47,15 @@ export const ClienteMapping = new EntitySchema({
          type: 'Date',
          nullable: false,
          default: 'now()',
+      },
+      pedidos: {
+         kind: '1:m', //Um cliente para muitos pedidos.
+         entity: () => Pedido, //Entidade relacionada.
+         type: 'array', //Tipo de relacionamento.
+         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+         mappedBy: (pedido: any) => pedido.cliente, //Quem mapeia é o pedido, ou seja, na tabela pedido será criado id_cliente.
+         joinColumn: 'id_cliente',
+         orphanRemoval: true,
       },
    },
 });
