@@ -1,98 +1,60 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Projeto NestJS - Sistema de Gerenciamento de Clientes
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este projeto implementa um sistema de gerenciamento de clientes utilizando NestJS com uma arquitetura limpa e orientada a domínio.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Estrutura do Projeto
 
-## Description
+O projeto segue os princípios de Domain-Driven Design (DDD) e Command Query Responsibility Segregation (CQRS), organizando o código em camadas bem definidas:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **Entidades de Domínio**: Representam os conceitos principais do negócio
+- **Value Objects**: Encapsulam valores com regras de validação específicas
+- **Commands**: Implementam operações que alteram o estado do sistema
+- **Queries**: Implementam operações de consulta sem efeitos colaterais
 
-## Project setup
+## Tecnologias Utilizadas
 
-```bash
-$ npm install
-```
+- **NestJS**: Framework para construção de aplicações server-side em Node.js
+- **MikroORM**: ORM para persistência de dados
+- **SQLite**: Banco de dados relacional leve
+- **class-validator**: Biblioteca para validação de dados
+- **CQRS**: Padrão para separação de responsabilidades entre comandos e consultas
 
-## Compile and run the project
+## Funcionalidades Implementadas
 
-```bash
-# development
-$ npm run start
+### Gerenciamento de Clientes
 
-# watch mode
-$ npm run start:dev
+- **Cadastro de Cliente**: Permite criar novos clientes com validação de dados
+- **Atualização de Cliente**: Permite atualizar informações de clientes existentes
+- **Consulta de Cliente**: Permite buscar clientes por ID ou listar todos os clientes
+- **Desativação de Cliente**: Permite marcar um cliente como inativo
 
-# production mode
-$ npm run start:prod
-```
+### Validações Implementadas
 
-## Run tests
+- Validação de formato de e-mail
+- Validação de formato de telefone
+- Verificação de unicidade de e-mail
+- Validação de tamanho de campos
 
-```bash
-# unit tests
-$ npm run test
+## Estrutura de Dados
 
-# e2e tests
-$ npm run test:e2e
+### Cliente
 
-# test coverage
-$ npm run test:cov
-```
+- **ID**: Identificador único do cliente
+- **Nome**: Nome do cliente (até 100 caracteres)
+- **Email**: Endereço de e-mail único (até 150 caracteres)
+- **Telefone**: Número de telefone (até 20 caracteres)
+- **Ativo**: Indica se o cliente está ativo
+- **Data de Cadastro**: Data em que o cliente foi cadastrado
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Como Executar o Projeto
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Instalar dependências
+npm install
+
+# Executar em modo de desenvolvimento
+npm run start:dev
+
+# Executar em modo de produção
+npm run start:prod
 ```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
