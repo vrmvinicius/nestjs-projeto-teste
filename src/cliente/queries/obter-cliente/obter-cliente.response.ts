@@ -26,12 +26,12 @@ export class ObterClienteResponse {
 
    static fromEntity(cliente: Cliente): ObterClienteResponse {
       return new ObterClienteResponse({
-         id: cliente.Id,
-         nome: cliente.Nome,
-         email: cliente.Email.toString(),
-         telefone: cliente.Telefone.toString(),
-         ativo: cliente.Ativo,
-         dataCadastro: cliente.DataCadastro,
+         id: cliente.id,
+         nome: cliente.nome,
+         email: cliente.email.toString(),
+         telefone: cliente.telefone.toString(),
+         ativo: cliente.ativo,
+         dataCadastro: cliente.dataCadastro,
       });
    }
 }
