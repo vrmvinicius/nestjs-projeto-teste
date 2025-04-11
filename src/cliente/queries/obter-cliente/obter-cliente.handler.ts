@@ -18,8 +18,8 @@ export class ObterClienteHandler implements IQueryHandler<ObterClienteCommand, R
       }
 
       const cliente = await this.em.findOne(Cliente, {
-         Id: query.id,
-         Ativo: true,
+         id: query.id,
+         ativo: true,
       });
 
       if (!cliente) {
@@ -27,12 +27,12 @@ export class ObterClienteHandler implements IQueryHandler<ObterClienteCommand, R
       }
 
       const response = new ObterClienteResponse({
-         id: cliente.Id,
-         nome: cliente.Nome,
-         email: cliente.Email.toString(),
-         telefone: cliente.Telefone.toString(),
+         id: cliente.id,
+         nome: cliente.nome,
+         email: cliente.email.toString(),
+         telefone: cliente.telefone.toString(),
          ativo: true,
-         dataCadastro: cliente.DataCadastro,
+         dataCadastro: cliente.dataCadastro,
       });
 
       return Result.ok(response);
