@@ -66,14 +66,14 @@
           "mappedType": "datetime"
         }
       },
-      "name": "clientes",
+      "name": "cliente",
       "indexes": [
         {
           "columnNames": [
             "email"
           ],
           "composite": false,
-          "keyName": "clientes_email_index",
+          "keyName": "cliente_email_index",
           "constraint": false,
           "primary": false,
           "unique": false
@@ -83,7 +83,7 @@
             "email"
           ],
           "composite": false,
-          "keyName": "clientes_email_unique",
+          "keyName": "cliente_email_unique",
           "constraint": true,
           "primary": false,
           "unique": true
@@ -93,7 +93,7 @@
             "ativo"
           ],
           "composite": false,
-          "keyName": "clientes_ativo_index",
+          "keyName": "cliente_ativo_index",
           "constraint": false,
           "primary": false,
           "unique": false
@@ -111,6 +111,79 @@
       ],
       "checks": [],
       "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "length": null,
+          "mappedType": "integer"
+        },
+        "numero": {
+          "name": "numero",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "integer"
+        },
+        "id_cliente": {
+          "name": "id_cliente",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": null,
+          "mappedType": "integer"
+        }
+      },
+      "name": "pedido",
+      "indexes": [
+        {
+          "columnNames": [
+            "id_cliente"
+          ],
+          "composite": false,
+          "keyName": "pedido_id_cliente_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "pedido_id_cliente_foreign": {
+          "constraintName": "pedido_id_cliente_foreign",
+          "columnNames": [
+            "id_cliente"
+          ],
+          "localTableName": "pedido",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "cliente",
+          "updateRule": "cascade"
+        }
+      },
       "nativeEnums": {}
     }
   ],
