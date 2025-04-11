@@ -1,4 +1,5 @@
 import { Cliente } from '@/cliente/entities/cliente.entity';
+import { Pedido } from '@/cliente/entities/pedido.entity';
 import { EntityManager } from '@mikro-orm/core';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Result } from 'src/common/results/result';
@@ -14,11 +15,20 @@ export class CriarClienteHandler implements ICommandHandler<CriarClienteCommand,
          return Result.fail(command.errors);
       }
 
+      const emailJaCadastrado = await this.em.count(Cliente, { email: command.email });
+
+      if (emailJaCadastrado) {
+         return Result.fail(`Email ${command.email} já cadastrado`);
+      }
+
       const cliente = Cliente.criar({
          nome: command.nome,
          email: command.email,
          telefone: command.telefone,
       });
+
+      const pedido = Pedido.criar({ numero: 123456 });
+      cliente.adicionarPedido(pedido);
 
       await this.em.transactional(async (em) => {
          await em.saveInsert(cliente);
@@ -30,6 +40,7 @@ export class CriarClienteHandler implements ICommandHandler<CriarClienteCommand,
          email: cliente.email.toString(),
          telefone: cliente.telefone.toString(),
          dataCadastro: cliente.dataCadastro,
+         pedidos: cliente.pedidosArray(),
       });
 
       return Result.created(response);
