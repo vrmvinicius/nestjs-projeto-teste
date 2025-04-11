@@ -1,3 +1,5 @@
+import { Collection } from '@mikro-orm/core';
+
 /**
  * Classe base para todas as entidades de domínio
  */
@@ -32,11 +34,27 @@ export abstract class EntityBase {
          const value = (this as any)[privateField];
 
          if (value === undefined) {
-            // Se o campo privado for undefined, não há comparação a ser feita
             continue;
          }
 
          let valueToUse: any;
+
+         if (value instanceof EntityBase) {
+            valueToUse = value.getModifiedPrivateProperties();
+            continue;
+         }
+
+         if (value instanceof Collection && value.length > 0 && value[0] instanceof EntityBase) {
+            valueToUse = value.map((item) => {
+               if (item instanceof EntityBase) {
+                  return item.getModifiedPrivateProperties();
+               }
+               return item as EntityBase;
+            });
+
+            changes[prop] = valueToUse;
+            continue;
+         }
 
          // Trata value objects que possuem método toString()
          if (typeof value === 'object' && typeof value.toString === 'function') {
@@ -51,5 +69,29 @@ export abstract class EntityBase {
       }
 
       return changes;
+   }
+
+   /**
+    * Utility method to extract array from any collection type
+    */
+   toArray<T>(collection: any): T[] {
+      if (!collection) return [];
+
+      if (typeof collection.getAll === 'function') {
+         // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+         return collection.getAll();
+      }
+
+      if (typeof collection.getItems === 'function') {
+         // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+         return collection.getItems();
+      }
+
+      if (Array.isArray(collection)) {
+         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+         return [...collection];
+      }
+
+      return [];
    }
 }
