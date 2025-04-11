@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Result } from 'src/common/results/result';
 import { CriarClienteCommand } from './commands/criar-cliente/criar-cliente.command';
@@ -8,6 +8,9 @@ import { ObterClienteTodosCommand } from './queries/obter-cliente-todos/obter-cl
 import { ObterClienteTodosResponse } from './queries/obter-cliente-todos/obter-cliente-todos.response';
 import { ObterClienteCommand } from './queries/obter-cliente/obter-cliente.command';
 import { ObterClienteResponse } from './queries/obter-cliente/obter-cliente.response';
+import { AtualizarClienteResponse } from './commands/atualizar-cliente/atualizar-cliente.response';
+import { AtualizarClienteCommand } from './commands/atualizar-cliente/atualizar-cliente.command';
+import { AtualizarClienteDto } from './commands/atualizar-cliente/dto/atualizar-cliente.dto';
 
 @Controller()
 export class ClientesController {
@@ -39,6 +42,19 @@ export class ClientesController {
       });
 
       const response = (await this.commandBus.execute(command)) as Result<CriarClienteResponse>;
+      return response.valueOrThrowIfFailure();
+   }
+
+   @Put('api/v1/clientes')
+   async atualizar(@Body() atualizarClienteDto: AtualizarClienteDto): Promise<AtualizarClienteResponse> {
+      const command = new AtualizarClienteCommand({
+         id: atualizarClienteDto.id,
+         nome: atualizarClienteDto.nome,
+         email: atualizarClienteDto.email,
+         telefone: atualizarClienteDto.telefone,
+      });
+
+      const response = (await this.commandBus.execute(command)) as Result<AtualizarClienteResponse>;
       return response.valueOrThrowIfFailure();
    }
 }
