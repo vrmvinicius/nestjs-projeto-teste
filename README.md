@@ -10,6 +10,7 @@ O projeto segue os princípios de Domain-Driven Design (DDD) e Command Query Res
 - **Value Objects**: Encapsulam valores com regras de validação específicas
 - **Commands**: Implementam operações que alteram o estado do sistema
 - **Queries**: Implementam operações de consulta sem efeitos colaterais
+- **Handlers**: Processam comandos e consultas, aplicando a lógica de negócio
 
 ## Tecnologias Utilizadas
 
@@ -28,6 +29,12 @@ O projeto segue os princípios de Domain-Driven Design (DDD) e Command Query Res
 - **Consulta de Cliente**: Permite buscar clientes por ID ou listar todos os clientes
 - **Desativação de Cliente**: Permite marcar um cliente como inativo
 
+### Gerenciamento de Pedidos
+
+- **Criação de Pedidos**: Permite adicionar novos pedidos a um cliente
+- **Atualização de Pedidos**: Permite modificar informações de pedidos existentes
+- **Associação Cliente-Pedido**: Mantém o relacionamento entre clientes e seus pedidos
+
 ### Validações Implementadas
 
 - Validação de formato de e-mail
@@ -45,6 +52,20 @@ O projeto segue os princípios de Domain-Driven Design (DDD) e Command Query Res
 - **Telefone**: Número de telefone (até 20 caracteres)
 - **Ativo**: Indica se o cliente está ativo
 - **Data de Cadastro**: Data em que o cliente foi cadastrado
+- **Pedidos**: Coleção de pedidos associados ao cliente
+
+### Pedido
+
+- **ID**: Identificador único do pedido
+- **Número**: Número de identificação do pedido
+- **Cliente**: Referência ao cliente proprietário do pedido
+
+## Padrões de Design Implementados
+
+- **Value Objects**: Email e Telefone são implementados como objetos de valor
+- **Entity Collections**: Gerenciamento de coleções de entidades com controle de acesso
+- **Command Pattern**: Encapsulamento de operações em objetos de comando
+- **Repository Pattern**: Abstração do acesso a dados
 
 ## Como Executar o Projeto
 
