@@ -1,9 +1,10 @@
 // src/infrastructure/mikro-orm/mappings/cliente.mapping.ts
 import { Cliente } from '@/cliente/entities/cliente.entity';
-import { Pedido } from '@/cliente/entities/pedido.entity';
+
 import { EntitySchema } from '@mikro-orm/core';
 import { EmailType } from '../types/email.type';
 import { TelefoneType } from '../types/telefone.type';
+import { Pedido } from '@/pedido/entities/pedido.entity';
 
 export const ClienteMapping = new EntitySchema({
    class: Cliente,

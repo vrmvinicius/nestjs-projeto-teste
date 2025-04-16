@@ -185,6 +185,99 @@
         }
       },
       "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "length": null,
+          "mappedType": "integer"
+        },
+        "id_pedido": {
+          "name": "id_pedido",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": null,
+          "mappedType": "integer"
+        },
+        "descricao": {
+          "name": "descricao",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "text"
+        },
+        "quantidade": {
+          "name": "quantidade",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": null,
+          "mappedType": "integer"
+        },
+        "valor_unitario": {
+          "name": "valor_unitario",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": null,
+          "mappedType": "integer"
+        }
+      },
+      "name": "pedido_item",
+      "indexes": [
+        {
+          "columnNames": [
+            "id_pedido"
+          ],
+          "composite": false,
+          "keyName": "pedido_item_id_pedido_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "pedido_item_id_pedido_foreign": {
+          "constraintName": "pedido_item_id_pedido_foreign",
+          "columnNames": [
+            "id_pedido"
+          ],
+          "localTableName": "pedido_item",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "pedido",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
     }
   ],
   "nativeEnums": {}

@@ -1,10 +1,11 @@
 import { Cliente } from '@/cliente/entities/cliente.entity';
-import { Pedido } from '@/cliente/entities/pedido.entity';
+
 import { EntityManager } from '@mikro-orm/core';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Result } from 'src/common/results/result';
 import { CriarClienteCommand } from './criar-cliente.command';
 import { CriarClienteResponse } from './criar-cliente.response';
+import { Pedido } from '@/pedido/entities/pedido.entity';
 
 @CommandHandler(CriarClienteCommand)
 export class CriarClienteHandler implements ICommandHandler<CriarClienteCommand, Result<CriarClienteResponse>> {
@@ -27,7 +28,7 @@ export class CriarClienteHandler implements ICommandHandler<CriarClienteCommand,
          telefone: command.telefone,
       });
 
-      const pedido = Pedido.criar({ numero: 123456 });
+      const pedido = Pedido.criar({ cliente: cliente, numero: 123456 });
       cliente.adicionarPedido(pedido);
 
       await this.em.transactional(async (em) => {

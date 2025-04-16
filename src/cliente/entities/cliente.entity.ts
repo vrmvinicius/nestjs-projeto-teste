@@ -2,7 +2,7 @@ import { EntityBase } from '@/common/domain/entities/entity.base';
 import { EntityCollection } from '@/infrastructure/collections/entity-collection';
 import { Email } from '../value-objects/email.value-object';
 import { Telefone } from '../value-objects/telefone.value-object';
-import { Pedido } from './pedido.entity';
+import { Pedido } from '@/pedido/entities/pedido.entity';
 
 export class Cliente extends EntityBase {
    private _id: number;

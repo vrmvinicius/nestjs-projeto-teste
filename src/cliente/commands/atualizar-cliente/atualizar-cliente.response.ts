@@ -1,4 +1,4 @@
-import { Pedido } from '@/cliente/entities/pedido.entity';
+import { Pedido } from '@/pedido/entities/pedido.entity';
 
 export class AtualizarClienteResponse {
    public readonly id: number;
